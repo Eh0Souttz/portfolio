@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>João Pedro — Analista de Sistemas & Desenvolvedor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#0B1622;
+    --bg-1:#122236;
+    --bg-2:#182E47;
+    --paper:#ECE7DA;
+    --ink:#E7EEF5;
+    --ink-dim:#9FB1C4;
+    --cyan:#5EEAD4;
+    --amber:#F2B84B;
+    --line:rgba(94,234,212,0.22);
+    --line-strong:rgba(94,234,212,0.45);
+    --radius:2px;
+    --display:'Space Grotesk', sans-serif;
+    --body:'IBM Plex Sans', sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  body{
+    margin:0;
+    background:var(--bg-0);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  img,svg{display:block; max-width:100%;}
+
+  /* Blueprint grid background */
+  .grid-bg{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:44px 44px;
+    opacity:0.5;
+    pointer-events:none;
+  }
+  .grid-bg.fine{
+    background-size:11px 11px;
+    opacity:0.18;
+  }
+
+  section{position:relative; overflow:hidden;}
+
+  /* Folio / title-block corner — the signature element, repeats every section like sheet numbers on a technical drawing */
+  .folio{
+    position:absolute;
+    top:18px; right:18px;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:0.06em;
+    color:var(--ink-dim);
+    border:1px solid var(--line-strong);
+    padding:8px 10px;
+    display:grid;
+    gap:3px;
+    text-transform:uppercase;
+    background:rgba(11,22,34,0.5);
+    backdrop-filter:blur(2px);
+    z-index:3;
+  }
+  .folio span.hi{color:var(--cyan);}
+  @media (max-width:640px){
+    .folio{font-size:9px; padding:6px 8px; top:10px; right:10px;}
+  }
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px;}
+
+  /* NAV */
+  header.top{
+    position:sticky; top:0; z-index:20;
+    background:rgba(11,22,34,0.86);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+  }
+  .brandmark{
+    font-family:var(--mono); font-size:13px; letter-spacing:0.08em;
+    color:var(--cyan); display:flex; align-items:center; gap:8px;
+  }
+  .brandmark .dot{width:7px; height:7px; background:var(--cyan); display:inline-block; border-radius:50%;}
+  .navlinks{display:flex; gap:26px; list-style:none; margin:0; padding:0; font-family:var(--mono); font-size:12px; letter-spacing:0.05em; text-transform:uppercase;}
+  .navlinks a{text-decoration:none; color:var(--ink-dim); transition:color .2s;}
+  .navlinks a:hover, .navlinks a:focus-visible{color:var(--cyan);}
+  @media (max-width:720px){ .navlinks{display:none;} }
+
+  /* HERO */
+  .hero{
+    min-height:88vh;
+    display:flex; align-items:center;
+    background:radial-gradient(ellipse at 20% 0%, var(--bg-2), var(--bg-0) 62%);
+    padding:120px 0 90px;
+  }
+  .hero .wrap{position:relative; z-index:2;}
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--amber); margin:0 0 18px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:''; width:26px; height:1px; background:var(--amber); display:inline-block;}
+  h1.name{
+    font-family:var(--display); font-weight:700;
+    font-size:clamp(2.6rem, 7vw, 5rem);
+    margin:0 0 6px; line-height:1.02; letter-spacing:-0.01em;
+  }
+  h1.name .accent{color:var(--cyan);}
+  .role{
+    font-family:var(--display); font-weight:500; font-size:clamp(1.1rem,2.6vw,1.6rem);
+    color:var(--ink-dim); margin:0 0 28px;
+  }
+  .lede{max-width:560px; color:var(--ink-dim); font-size:1.02rem; margin:0 0 32px;}
+  .pill-row{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:40px;}
+  .pill{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:0.03em;
+    border:1px solid var(--line-strong); color:var(--cyan);
+    padding:7px 12px; border-radius:100px; background:rgba(94,234,212,0.06);
+  }
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono); font-size:13px; letter-spacing:0.04em; text-transform:uppercase;
+    padding:13px 22px; text-decoration:none; border-radius:var(--radius);
+    display:inline-flex; align-items:center; gap:8px; transition:transform .15s, background .15s, color .15s;
+  }
+  .btn-primary{background:var(--cyan); color:#08131F; font-weight:600;}
+  .btn-primary:hover, .btn-primary:focus-visible{transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--line-strong); color:var(--ink);}
+  .btn-ghost:hover, .btn-ghost:focus-visible{border-color:var(--cyan); color:var(--cyan);}
+  :focus-visible{outline:2px solid var(--cyan); outline-offset:3px;}
+
+  .schem{
+    position:absolute; right:-6%; top:50%; transform:translateY(-50%);
+    width:640px; max-width:52vw; opacity:0.9; z-index:1;
+  }
+  @media (max-width:900px){ .schem{display:none;} }
+  .schem path.flow{ stroke-dasharray:6 7; animation:flowmove 3.4s linear infinite; }
+  @keyframes flowmove{ to{ stroke-dashoffset:-130; } }
+  .schem .pulse{ animation:pulse 2.6s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{opacity:.35;} 50%{opacity:1;} }
+
+  /* SECTION HEADERS */
+  .sec-head{margin-bottom:44px; max-width:640px;}
+  .sec-num{font-family:var(--mono); color:var(--amber); font-size:12px; letter-spacing:0.1em;}
+  h2{
+    font-family:var(--display); font-weight:600; font-size:clamp(1.7rem,4vw,2.4rem);
+    margin:8px 0 12px;
+  }
+  .sec-sub{color:var(--ink-dim); font-size:1rem;}
+
+  section.band{padding:100px 0; border-top:1px solid var(--line);}
+  section.band.paper{
+    background:var(--paper); color:#20281f;
+  }
+  section.band.paper .sec-num{color:#8A5A1E;}
+  section.band.paper .ink-dim2{color:#5A6656;}
+
+  /* SOBRE */
+  .about-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:56px; align-items:start;}
+  @media (max-width:800px){ .about-grid{grid-template-columns:1fr;} }
+  .about-grid p{color:var(--ink-dim); font-size:1.02rem; margin:0 0 16px;}
+  .stat-block{border:1px solid var(--line-strong); padding:24px; font-family:var(--mono); background:rgba(94,234,212,0.04);}
+  .stat-block dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:10px 16px; font-size:12.5px;}
+  .stat-block dt{color:var(--ink-dim); text-transform:uppercase; letter-spacing:0.05em;}
+  .stat-block dd{margin:0; color:var(--cyan);}
+
+  /* SKILLS */
+  .skills-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:1px; background:var(--line-strong); border:1px solid var(--line-strong);}
+  .skill-card{background:var(--bg-0); padding:22px 20px;}
+  .skill-cat{font-family:var(--mono); font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--amber); margin-bottom:10px;}
+  .skill-card ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:7px;}
+  .skill-card li{font-size:14px; color:var(--ink); display:flex; align-items:center; gap:8px;}
+  .skill-card li::before{content:''; width:5px; height:5px; background:var(--cyan); border-radius:50%; flex:none;}
+  .skill-card li.progress{color:var(--ink-dim);}
+  .skill-card li.progress::before{background:var(--amber);}
+
+  /* PROJETO DE ANALISE */
+  .doc-frame{border:1px solid rgba(32,40,31,0.28); background:#F7F4EA;}
+  .doc-head{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:20px;
+    padding:22px 28px; border-bottom:1px solid rgba(32,40,31,0.2); flex-wrap:wrap;
+  }
+  .doc-title{font-family:var(--display); font-weight:600; font-size:1.4rem; margin:0;}
+  .doc-meta{font-family:var(--mono); font-size:11px; color:#5A6656; text-align:right; line-height:1.7;}
+  .doc-body{padding:28px;}
+  .doc-body h4{font-family:var(--display); font-size:1.05rem; margin:30px 0 10px; color:#20281f;}
+  .doc-body h4:first-child{margin-top:0;}
+  .doc-body p{color:#3C4536; font-size:0.98rem; margin:0 0 12px;}
+  .doc-table{width:100%; border-collapse:collapse; font-size:13.5px; margin:14px 0 6px;}
+  .doc-table th, .doc-table td{border:1px solid rgba(32,40,31,0.22); padding:9px 11px; text-align:left; vertical-align:top;}
+  .doc-table th{background:rgba(32,40,31,0.06); font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:0.04em;}
+  .doc-table td{color:#3C4536;}
+  .tag-rf{font-family:var(--mono); font-size:11px; color:#8A5A1E;}
+  .actor-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:14px 0 22px;}
+  @media (max-width:700px){ .actor-row{grid-template-columns:1fr;} }
+  .actor-card{border:1px solid rgba(32,40,31,0.2); padding:14px 16px; background:rgba(255,255,255,0.5);}
+  .actor-card b{font-family:var(--display); font-size:0.95rem;}
+  .actor-card ul{margin:8px 0 0; padding-left:18px; font-size:13px; color:#3C4536;}
+  .diagram-box{border:1px dashed rgba(32,40,31,0.35); padding:18px; margin:14px 0 24px; background:rgba(255,255,255,0.4); overflow-x:auto;}
+  .diagram-caption{font-family:var(--mono); font-size:10.5px; color:#8A5A1E; text-transform:uppercase; letter-spacing:0.06em; margin-top:10px; text-align:center;}
+  .note-box{border-left:3px solid var(--amber); background:rgba(242,184,75,0.08); padding:14px 18px; font-size:0.94rem; color:#3C4536; margin-top:18px;}
+  .note-box b{color:#8A5A1E;}
+
+  /* CALCULATOR */
+  .calc-wrap{display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:center;}
+  @media (max-width:800px){ .calc-wrap{grid-template-columns:1fr;} }
+  .calc{
+    width:min(340px, 100%); margin:0 auto;
+    background:var(--bg-2); border:1px solid var(--line-strong);
+    border-radius:6px; padding:18px; box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+  }
+  .calc-screen{
+    background:#081119; border:1px solid var(--line);
+    border-radius:4px; padding:18px 16px; margin-bottom:14px; text-align:right;
+    font-family:var(--mono);
+  }
+  .calc-prev{color:var(--ink-dim); font-size:13px; min-height:16px; overflow-x:auto; white-space:nowrap;}
+  .calc-cur{color:var(--cyan); font-size:2.1rem; overflow-x:auto; white-space:nowrap;}
+  .calc-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px;}
+  .calc-grid button{
+    font-family:var(--mono); font-size:16px; padding:16px 0; border-radius:4px;
+    border:1px solid var(--line); background:var(--bg-1); color:var(--ink); cursor:pointer;
+    transition:background .12s, transform .08s, border-color .12s;
+  }
+  .calc-grid button:hover{border-color:var(--cyan);}
+  .calc-grid button:active{transform:scale(0.96);}
+  .calc-grid button.op{color:var(--cyan); border-color:var(--line-strong);}
+  .calc-grid button.eq{background:var(--cyan); color:#08131F; font-weight:600; grid-row:span 2;}
+  .calc-grid button.zero{grid-column:span 2;}
+  .calc-grid button.fn{color:var(--amber);}
+
+  .calc-notes{color:var(--ink-dim);}
+  .calc-notes h3{font-family:var(--display); color:var(--ink); font-size:1.3rem; margin-top:0;}
+  .code-chip{
+    display:inline-block; font-family:var(--mono); font-size:12px; background:rgba(94,234,212,0.08);
+    border:1px solid var(--line); color:var(--cyan); padding:3px 8px; border-radius:3px; margin:2px 4px 2px 0;
+  }
+  .feat-list{list-style:none; margin:18px 0 0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .feat-list li{font-size:14.5px; padding-left:22px; position:relative;}
+  .feat-list li::before{content:'✓'; position:absolute; left:0; color:var(--cyan); font-family:var(--mono);}
+
+  /* CONTATO / FOOTER */
+  footer.band{padding:90px 0 50px; background:var(--bg-1); border-top:1px solid var(--line);}
+  .contact-grid{display:flex; flex-wrap:wrap; gap:16px; margin:30px 0 60px;}
+  .contact-card{
+    flex:1 1 220px; border:1px solid var(--line-strong); padding:20px;
+    background:rgba(94,234,212,0.03); text-decoration:none; color:var(--ink);
+    transition:border-color .15s, transform .15s;
+  }
+  .contact-card:hover, .contact-card:focus-visible{border-color:var(--cyan); transform:translateY(-3px);}
+  .contact-card .k{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:0.08em; color:var(--amber); display:block; margin-bottom:8px;}
+  .contact-card .v{font-family:var(--display); font-size:1.05rem;}
+  .fine-print{font-family:var(--mono); font-size:11px; color:var(--ink-dim); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; border-top:1px solid var(--line); padding-top:22px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <nav class="wrap">
+    <div class="brandmark"><span class="dot"></span> JP · SISTEMAS</div>
+    <ul class="navlinks">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#skills">Habilidades</a></li>
+      <li><a href="#projeto">Projeto</a></li>
+      <li><a href="#calculadora">Calculadora</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="grid-bg"></div>
+  <svg class="schem" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g fill="none" stroke="var(--line-strong)" stroke-width="1.4">
+      <rect x="40" y="40" width="120" height="60" rx="2"/>
+      <rect x="300" y="30" width="130" height="60" rx="2"/>
+      <rect x="300" y="200" width="130" height="60" rx="2"/>
+      <rect x="40" y="220" width="120" height="60" rx="2"/>
+      <rect x="180" y="330" width="150" height="60" rx="2"/>
+      <circle cx="480" cy="330" r="34"/>
+    </g>
+    <g fill="none" stroke="var(--cyan)" stroke-width="1.6" class="flow">
+      <path d="M160 70 H300 65"/>
+      <path d="M365 90 V200"/>
+      <path d="M300 230 H160 250"/>
+      <path d="M100 280 V330 H180"/>
+      <path d="M330 360 H446"/>
+    </g>
+    <g class="pulse" fill="var(--cyan)">
+      <circle cx="160" cy="70" r="3.5"/>
+      <circle cx="365" cy="200" r="3.5"/>
+      <circle cx="180" cy="360" r="3.5"/>
+      <circle cx="446" cy="360" r="3.5"/>
+    </g>
+    <g font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ink-dim)">
+      <text x="52" y="35">ENTRADA</text>
+      <text x="312" y="24">PROCESSO</text>
+      <text x="312" y="194">VALIDAÇÃO</text>
+      <text x="52" y="214">BANCO DE DADOS</text>
+      <text x="192" y="324">SAÍDA</text>
+    </g>
+  </svg>
+  <div class="wrap">
+    <p class="eyebrow">Disponível para oportunidades remotas</p>
+    <h1 class="name">João <span class="accent">Pedro</span></h1>
+    <p class="role">Analista de Sistemas &amp; Desenvolvedor em formação</p>
+    <p class="lede">26 anos, analista de sistemas atuando como PJ (CNPJ) e estudando Análise e Desenvolvimento de Sistemas no Senac. Este espaço reúne o que sei fazer na prática — projetos reais de análise e código — e está aberto: estou disponível para novas oportunidades remotas.</p>
+    <div class="pill-row">
+      <span class="pill">Levantamento de Requisitos</span>
+      <span class="pill">Lógica de Programação</span>
+      <span class="pill">HTML · CSS · JS</span>
+      <span class="pill">SQL</span>
+      <span class="pill">Inglês em progresso</span>
+    </div>
+    <div class="cta-row">
+      <a href="#projeto" class="btn btn-primary">Ver projeto de análise</a>
+      <a href="#contato" class="btn btn-ghost">Falar comigo</a>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="sobre">
+  <div class="folio">
+    <span>FOLHA <span class="hi">01</span></span>
+    <span>PROJ: JP-PORT</span>
+    <span>SEÇÃO: SOBRE</span>
+  </div>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">// 01 — Sobre</span>
+      <h2>De curioso a analista</h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p>Esta é uma espécie de carta aberta: comecei mexendo em computador por curiosidade e hoje isso virou profissão. Atuo como analista de sistemas via CNPJ, lidando no dia a dia com levantamento de requisitos, processos internos e suporte às áreas de negócio — e sigo em busca da próxima oportunidade para colocar isso em prática em um time fixo, remoto.</p>
+        <p>Fora do expediente, sigo estudando — Análise e Desenvolvimento de Sistemas no Senac, o curso do Gustavo Guanabara (Curso em Vídeo) para reforçar lógica e programação, e inglês pelo Fluencypass. Tenho o hábito de me aprofundar demais em cada assunto novo que aparece; por isso decidi transformar esse hábito em algo produtivo e documentar aqui o que efetivamente coloco em prática.</p>
+        <p>O objetivo deste portfólio é simples: mostrar trabalho real — análise e código — para dar o próximo passo na carreira, de preferência em regime remoto.</p>
+      </div>
+      <div class="stat-block">
+        <dl>
+          <dt>Cargo atual</dt><dd>Analista de Sistemas</dd>
+          <dt>Regime</dt><dd>PJ (CNPJ)</dd>
+          <dt>Formação</dt><dd>ADS — Senac (em curso)</dd>
+          <dt>Idade</dt><dd>26 anos</dd>
+          <dt>Buscando</dt><dd>Vaga remota — Análise / Suporte</dd>
+          <dt>Idiomas</dt><dd>PT-BR nativo · EN em progresso</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="skills" style="background:var(--bg-1);">
+  <div class="folio">
+    <span>FOLHA <span class="hi">02</span></span>
+    <span>PROJ: JP-PORT</span>
+    <span>SEÇÃO: STACK</span>
+  </div>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">// 02 — Habilidades</span>
+      <h2>Ferramentas que uso e estudo</h2>
+      <p class="sec-sub">Combinação do que aplico no trabalho com o que venho estudando por conta própria.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <p class="skill-cat">Análise</p>
+        <ul>
+          <li>Levantamento de requisitos</li>
+          <li>Casos de uso &amp; atores</li>
+          <li>Modelagem de dados (ER)</li>
+          <li>Mapeamento de processos</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <p class="skill-cat">Desenvolvimento</p>
+        <ul>
+          <li>HTML &amp; CSS</li>
+          <li>JavaScript</li>
+          <li class="progress">Python (em progresso)</li>
+          <li class="progress">PHP (em progresso)</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <p class="skill-cat">Dados</p>
+        <ul>
+          <li>SQL — consultas e modelagem</li>
+          <li>Lógica de programação</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <p class="skill-cat">Formação contínua</p>
+        <ul>
+          <li>ADS — Senac</li>
+          <li>Curso em Vídeo (Gustavo Guanabara)</li>
+          <li class="progress">Inglês — Fluencypass</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band paper" id="projeto">
+  <div class="folio" style="border-color:rgba(32,40,31,0.35); color:#5A6656; background:rgba(236,231,218,0.6);">
+    <span>FOLHA <span class="hi" style="color:#8A5A1E;">03</span></span>
+    <span>PROJ: JP-PORT</span>
+    <span>SEÇÃO: ANÁLISE</span>
+  </div>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">// 03 — Projeto de Análise</span>
+      <h2>Estudo de caso: agendamento para clínica veterinária</h2>
+      <p class="sec-sub ink-dim2">Um projeto de análise de sistemas do zero, a partir de um problema real observado.</p>
+    </div>
+
+    <div class="doc-frame">
+      <div class="doc-head">
+        <h3 class="doc-title">Sistema de Agendamento — Clínica Pet&amp;Cia</h3>
+        <div class="doc-meta">
+          Documento de Análise de Requisitos<br>
+          Autor: João Pedro<br>
+          Revisão: A · Uso educacional/portfólio
+        </div>
+      </div>
+      <div class="doc-body">
+
+        <h4>1. Contexto</h4>
+        <p>Uma amiga que administra uma clínica veterinária de bairro me contou como organiza os agendamentos hoje: tudo é combinado por WhatsApp e anotado num caderno na recepção. Já aconteceu de dois tutores marcarem o mesmo horário e de vacinas de retorno serem esquecidas por falta de um controle centralizado. A partir dessa conversa, montei este projeto de análise para propor uma solução simples e viável para o tamanho do negócio.</p>
+
+        <h4>2. Objetivo do sistema</h4>
+        <p>Centralizar o agendamento de consultas e procedimentos, evitar conflitos de horário e manter um histórico básico de atendimento por pet — sem exigir uma equipe técnica para operar.</p>
+
+        <h4>3. Levantamento de requisitos funcionais</h4>
+        <table class="doc-table">
+          <thead><tr><th>Código</th><th>Requisito</th><th>Prioridade</th></tr></thead>
+          <tbody>
+            <tr><td class="tag-rf">RF01</td><td>Cadastrar tutor e seus pets (nome, espécie, raça, idade)</td><td>Alta</td></tr>
+            <tr><td class="tag-rf">RF02</td><td>Agendar consulta/procedimento, verificando conflito de horário</td><td>Alta</td></tr>
+            <tr><td class="tag-rf">RF03</td><td>Reagendar ou cancelar um atendimento já marcado</td><td>Alta</td></tr>
+            <tr><td class="tag-rf">RF04</td><td>Registrar o atendimento realizado no prontuário do pet</td><td>Média</td></tr>
+            <tr><td class="tag-rf">RF05</td><td>Enviar lembrete automático de vacina/retorno</td><td>Média</td></tr>
+            <tr><td class="tag-rf">RF06</td><td>Consultar agenda do dia por veterinário</td><td>Alta</td></tr>
+          </tbody>
+        </table>
+
+        <h4>4. Requisitos não funcionais</h4>
+        <table class="doc-table">
+          <thead><tr><th>Código</th><th>Requisito</th></tr></thead>
+          <tbody>
+            <tr><td class="tag-rf">RNF01</td><td>Interface simples, utilizável por recepcionista sem treinamento técnico</td></tr>
+            <tr><td class="tag-rf">RNF02</td><td>Funcionar em navegador, sem instalação local</td></tr>
+            <tr><td class="tag-rf">RNF03</td><td>Tempo de resposta abaixo de 2s nas operações de agenda</td></tr>
+          </tbody>
+        </table>
+
+        <h4>5. Atores</h4>
+        <div class="actor-row">
+          <div class="actor-card">
+            <b>Recepcionista</b>
+            <ul><li>Cadastra tutores/pets</li><li>Agenda e reagenda</li></ul>
+          </div>
+          <div class="actor-card">
+            <b>Veterinário(a)</b>
+            <ul><li>Consulta agenda do dia</li><li>Registra atendimento</li></ul>
+          </div>
+          <div class="actor-card">
+            <b>Tutor (cliente)</b>
+            <ul><li>Recebe lembretes</li><li>Solicita horário (via recepção)</li></ul>
+          </div>
+        </div>
+
+        <h4>6. Modelo de dados (simplificado)</h4>
+        <div class="diagram-box">
+          <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama entidade-relacionamento simplificado">
+            <g font-family="IBM Plex Mono, monospace" font-size="11" fill="#3C4536">
+              <g>
+                <rect x="10" y="20" width="140" height="86" fill="#fff" stroke="#20281f" stroke-width="1"/>
+                <rect x="10" y="20" width="140" height="22" fill="#20281f"/>
+                <text x="80" y="35" text-anchor="middle" fill="#F7F4EA">TUTOR</text>
+                <text x="20" y="58">id_tutor (PK)</text>
+                <text x="20" y="74">nome</text>
+                <text x="20" y="90">telefone</text>
+              </g>
+              <g>
+                <rect x="200" y="20" width="150" height="102" fill="#fff" stroke="#20281f" stroke-width="1"/>
+                <rect x="200" y="20" width="150" height="22" fill="#20281f"/>
+                <text x="275" y="35" text-anchor="middle" fill="#F7F4EA">PET</text>
+                <text x="210" y="58">id_pet (PK)</text>
+                <text x="210" y="74">id_tutor (FK)</text>
+                <text x="210" y="90">nome, espécie</text>
+                <text x="210" y="106">data_nasc</text>
+              </g>
+              <g>
+                <rect x="400" y="20" width="160" height="118" fill="#fff" stroke="#20281f" stroke-width="1"/>
+                <rect x="400" y="20" width="160" height="22" fill="#20281f"/>
+                <text x="480" y="35" text-anchor="middle" fill="#F7F4EA">AGENDAMENTO</text>
+                <text x="410" y="58">id_agenda (PK)</text>
+                <text x="410" y="74">id_pet (FK)</text>
+                <text x="410" y="90">id_vet (FK)</text>
+                <text x="410" y="106">data_hora</text>
+                <text x="410" y="122">status</text>
+              </g>
+              <g>
+                <rect x="600" y="20" width="115" height="86" fill="#fff" stroke="#20281f" stroke-width="1"/>
+                <rect x="600" y="20" width="115" height="22" fill="#20281f"/>
+                <text x="657" y="35" text-anchor="middle" fill="#F7F4EA">VETERINÁRIO</text>
+                <text x="610" y="58">id_vet (PK)</text>
+                <text x="610" y="74">nome</text>
+                <text x="610" y="90">crmv</text>
+              </g>
+              <g>
+                <rect x="200" y="165" width="150" height="55" fill="#fff" stroke="#20281f" stroke-width="1"/>
+                <rect x="200" y="165" width="150" height="22" fill="#20281f"/>
+                <text x="275" y="180" text-anchor="middle" fill="#F7F4EA">SERVIÇO</text>
+                <text x="210" y="203">id_servico (PK)</text>
+              </g>
+            </g>
+            <g stroke="#8A5A1E" stroke-width="1.2" fill="none">
+              <path d="M150 65 H200"/>
+              <path d="M350 65 H400"/>
+              <path d="M560 65 H600"/>
+              <path d="M480 138 V165"/>
+            </g>
+            <g font-family="IBM Plex Mono, monospace" font-size="10" fill="#8A5A1E">
+              <text x="158" y="60">1:N</text>
+              <text x="358" y="60">1:N</text>
+              <text x="568" y="60">N:1</text>
+              <text x="486" y="155">N:1</text>
+            </g>
+          </svg>
+          <p class="diagram-caption">Fig. 1 — Entidades principais e cardinalidade</p>
+        </div>
+
+        <h4>7. Fluxo do processo de agendamento</h4>
+        <div class="diagram-box">
+          <svg viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fluxo do processo de agendamento">
+            <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#3C4536">
+              <rect x="0" y="35" width="130" height="55" fill="#fff" stroke="#20281f"/>
+              <text x="65" y="58" text-anchor="middle">Tutor pede</text>
+              <text x="65" y="72" text-anchor="middle">horário</text>
+
+              <rect x="165" y="35" width="140" height="55" fill="#fff" stroke="#20281f"/>
+              <text x="235" y="58" text-anchor="middle">Recepção checa</text>
+              <text x="235" y="72" text-anchor="middle">disponibilidade</text>
+
+              <rect x="340" y="35" width="130" height="55" fill="#fff" stroke="#20281f"/>
+              <text x="405" y="58" text-anchor="middle">Confirma e</text>
+              <text x="405" y="72" text-anchor="middle">registra</text>
+
+              <rect x="505" y="35" width="120" height="55" fill="#fff" stroke="#20281f"/>
+              <text x="565" y="58" text-anchor="middle">Lembrete</text>
+              <text x="565" y="72" text-anchor="middle">automático</text>
+
+              <rect x="660" y="35" width="55" height="55" fill="#20281f"/>
+              <text x="687" y="58" text-anchor="middle" fill="#F7F4EA">Aten-</text>
+              <text x="687" y="72" text-anchor="middle" fill="#F7F4EA">dimento</text>
+            </g>
+            <g stroke="#8A5A1E" stroke-width="1.3" fill="none" marker-end="url(#arrow)">
+              <path d="M130 62 H165"/>
+              <path d="M305 62 H340"/>
+              <path d="M470 62 H505"/>
+              <path d="M625 62 H660"/>
+            </g>
+            <defs>
+              <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 Z" fill="#8A5A1E"/>
+              </marker>
+            </defs>
+          </svg>
+          <p class="diagram-caption">Fig. 2 — Do pedido do tutor até o atendimento</p>
+        </div>
+
+        <h4>8. Conclusão e próximos passos</h4>
+        <p>Este documento cobre a etapa de análise: entendimento do problema, requisitos, atores e modelagem inicial. O próximo passo natural seria prototipar as telas de agenda e cadastro e implementar o RF02 (verificação de conflito de horário), que é a regra de negócio mais crítica do sistema.</p>
+
+        <div class="note-box"><b>Nota de portfólio:</b> este é um projeto de estudo, construído para demonstrar processo de análise de sistemas de ponta a ponta — do problema real ao modelo de dados. Ainda não foi implementado como sistema funcional.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="calculadora" style="background:var(--bg-1);">
+  <div class="folio">
+    <span>FOLHA <span class="hi">04</span></span>
+    <span>PROJ: JP-PORT</span>
+    <span>SEÇÃO: CÓDIGO</span>
+  </div>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">// 04 — Programação</span>
+      <h2>Calculadora funcional</h2>
+      <p class="sec-sub">JavaScript puro, sem bibliotecas — para mostrar lógica de programação na prática.</p>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc">
+        <div class="calc-screen">
+          <div class="calc-prev" id="calcPrev">&nbsp;</div>
+          <div class="calc-cur" id="calcCur">0</div>
+        </div>
+        <div class="calc-grid">
+          <button class="fn" data-action="clear">C</button>
+          <button class="fn" data-action="sign">±</button>
+          <button class="fn" data-action="percent">%</button>
+          <button class="op" data-op="/">÷</button>
+
+          <button data-num="7">7</button>
+          <button data-num="8">8</button>
+          <button data-num="9">9</button>
+          <button class="op" data-op="*">×</button>
+
+          <button data-num="4">4</button>
+          <button data-num="5">5</button>
+          <button data-num="6">6</button>
+          <button class="op" data-op="-">−</button>
+
+          <button data-num="1">1</button>
+          <button data-num="2">2</button>
+          <button data-num="3">3</button>
+          <button class="op" data-op="+">+</button>
+
+          <button class="zero" data-num="0">0</button>
+          <button data-action="dot">,</button>
+          <button class="eq" data-action="equals">=</button>
+        </div>
+      </div>
+      <div class="calc-notes">
+        <h3>O que essa calculadora demonstra</h3>
+        <p>Uma calculadora parece simples, mas obriga a resolver problemas clássicos de lógica: precedência de operações, estado da tela, formatação de números e tratamento de erros (como divisão por zero).</p>
+        <ul class="feat-list">
+          <li>Operações básicas com precedência correta</li>
+          <li>Suporte a teclado (números e Enter)</li>
+          <li>Tratamento de divisão por zero</li>
+          <li>Formatação de números grandes/decimais</li>
+        </ul>
+        <p style="margin-top:20px;">
+          <span class="code-chip">JavaScript</span>
+          <span class="code-chip">DOM Events</span>
+          <span class="code-chip">Sem dependências</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="band" id="contato">
+  <div class="folio">
+    <span>FOLHA <span class="hi">05</span></span>
+    <span>PROJ: JP-PORT</span>
+    <span>SEÇÃO: CONTATO</span>
+  </div>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">// 05 — Contato</span>
+      <h2>Vamos conversar</h2>
+      <p class="sec-sub">Aberto a oportunidades remotas em análise de sistemas ou suporte técnico.</p>
+    </div>
+    <div class="contact-grid">
+      <a class="contact-card" href="mailto:jpedro.devs@gmail.com">
+        <span class="k">E-mail</span>
+        <span class="v">jpedro.devs@gmail.com</span>
+      </a>
+      <a class="contact-card" href="https://linkedin.com/in/joaopedrobatista9" target="_blank" rel="noopener">
+        <span class="k">LinkedIn</span>
+        <span class="v">joaopedrobatista9</span>
+      </a>
+      <a class="contact-card" href="https://github.com/Eh0Souttz" target="_blank" rel="noopener">
+        <span class="k">GitHub</span>
+        <span class="v">Eh0Souttz</span>
+      </a>
+      <a class="contact-card" href="https://wa.me/5599992015274" target="_blank" rel="noopener">
+        <span class="k">WhatsApp</span>
+        <span class="v">Conversar agora</span>
+      </a>
+    </div>
+    <div class="fine-print">
+      <span>JOÃO PEDRO — ANALISTA DE SISTEMAS · REV A</span>
+      <span id="footYear"></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  document.getElementById('footYear').textContent = 'Atualizado em ' + new Date().getFullYear();
+
+  // Calculadora
+  var cur = document.getElementById('calcCur');
+  var prev = document.getElementById('calcPrev');
+  var state = { first:null, op:null, display:'0', overwrite:true };
+
+  function fmt(n){
+    if(n === 'Erro') return n;
+    var num = parseFloat(n);
+    if(isNaN(num)) return '0';
+    var s = num.toString();
+    if(s.length > 12) s = num.toPrecision(10).replace(/\.?0+$/,'');
+    return s.replace('.', ',');
+  }
+
+  function render(){
+    cur.textContent = fmt(state.display);
+    prev.textContent = state.first !== null
+      ? fmt(state.first) + ' ' + (state.op === '/' ? '÷' : state.op === '*' ? '×' : state.op === '-' ? '−' : state.op || '')
+      : '\u00A0';
+  }
+
+  function inputNum(n){
+    if(state.display === 'Erro' || state.overwrite){
+      state.display = n; state.overwrite = false;
+    } else {
+      state.display = state.display === '0' ? n : state.display + n;
+    }
+    render();
+  }
+
+  function inputDot(){
+    if(state.overwrite){ state.display = '0.'; state.overwrite = false; render(); return; }
+    if(state.display.indexOf('.') === -1) state.display += '.';
+    render();
+  }
+
+  function compute(a, b, op){
+    a = parseFloat(a); b = parseFloat(b);
+    switch(op){
+      case '+': return a + b;
+      case '-': return a - b;
+      case '*': return a * b;
+      case '/': return b === 0 ? 'Erro' : a / b;
+      default: return b;
+    }
+  }
+
+  function setOp(op){
+    if(state.op && !state.overwrite){
+      var res = compute(state.first, state.display, state.op);
+      state.first = res;
+      state.display = res === 'Erro' ? 'Erro' : String(res);
+    } else {
+      state.first = state.display;
+    }
+    state.op = op;
+    state.overwrite = true;
+    render();
+  }
+
+  function equals(){
+    if(state.op === null || state.first === null) return;
+    var res = compute(state.first, state.display, state.op);
+    state.display = res === 'Erro' ? 'Erro' : String(res);
+    state.first = null; state.op = null; state.overwrite = true;
+    render();
+  }
+
+  function clearAll(){
+    state = { first:null, op:null, display:'0', overwrite:true };
+    render();
+  }
+
+  function sign(){
+    if(state.display === 'Erro' || state.display === '0') return;
+    state.display = state.display.charAt(0) === '-' ? state.display.slice(1) : '-' + state.display;
+    render();
+  }
+
+  function percent(){
+    if(state.display === 'Erro') return;
+    state.display = String(parseFloat(state.display) / 100);
+    render();
+  }
+
+  document.querySelectorAll('.calc-grid button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var num = btn.getAttribute('data-num');
+      var op = btn.getAttribute('data-op');
+      var action = btn.getAttribute('data-action');
+      if(num !== null) inputNum(num);
+      else if(op !== null) setOp(op);
+      else if(action === 'equals') equals();
+      else if(action === 'clear') clearAll();
+      else if(action === 'sign') sign();
+      else if(action === 'percent') percent();
+      else if(action === 'dot') inputDot();
+    });
+  });
+
+  window.addEventListener('keydown', function(e){
+    if(e.key >= '0' && e.key <= '9') inputNum(e.key);
+    else if(e.key === '.' || e.key === ',') inputDot();
+    else if(['+','-','*','/'].indexOf(e.key) !== -1) setOp(e.key);
+    else if(e.key === 'Enter' || e.key === '=') equals();
+    else if(e.key === 'Backspace') clearAll();
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
